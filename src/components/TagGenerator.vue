@@ -5,35 +5,35 @@
         <transition-group name="modal-transition" tag="div">
           <!--General Ad Tag Settings-->
           <div class="g-modal-container g-modal-wide" v-bind:class="{ gmodalleft: dspsett || invsett }" v-bind:key="1" v-if="showGenerator">
-            <button class="closebtn" @click="closeGenerator"> &times;</button>
+            <!-- <button class="closebtn" @click="closeGenerator"> &times;</button> -->
             <div class="g-modal-title" style="color:#5CB85C;">Ad Tag Generator</div>
             <div class="g-modal-content">
               <div id="general-setting">
-                Generate Ad Tag for Campaign
-                <br>
+               <!--  Generate Ad Tag for Campaign
+                <br> -->
                 <select id="campaign-select" v-model="campaignId">
                   <option v-for="campaign in campaignlist" v-bind:value="campaign.id" >
                     {{ campaign.name }}
                   </option>
                 </select>
-                <br>
+                <!-- <br> -->
                 Which DSP is this Ad Tag for?
                 <br>
                 <div style="position: relative;">
                 <select id="dsp-select" v-model="dspName">
-                 <!--  <optgroup label="Custom DSP">
+                  <optgroup label="Custom DSP">
                     <option v-for="(dsp, index) in customDSP" v-bind:value="index">
                       {{dsp.name}}
                     </option>
-                  </optgroup> -->
-                  <!-- <optgroup label="Predefined DSP"> -->
+                  </optgroup>
+                  <optgroup label="Predefined DSP">
                     <option v-for="(dsp, index) in definedDSP" v-bind:value="index">
                     {{ dsp.name }}
                     </option>
-                  <!-- </optgroup> -->
+                  </optgroup>
                 </select>
                 <div id="edit-dsp">
-                  <!-- <button class="link-button" v-bind:disabled="disableedit" @click="showDSPsett">Edit</button> -->
+                  <button class="link-button" v-bind:disabled="disableedit" @click="showDSPsett">Edit</button>
                   <div id="edit-dsp-tooltip" class="g-modal-tooltip">You can only edit your own Custom DSP</div>
                 </div>
                 <button id="advance-settings" class="link-button" @click="toggleInvsett">{{InvSettText}}</button>
@@ -80,7 +80,7 @@
                 <button class="link-button" style="margin-left: 0px; display: block; margin-top: 5px; text-align: left;padding-left: 0px;" @click="openChatbot">Not sure what is a DSP or how it works with our Ad Tag? Click here to learn more</button>
               </div> -->
               <div class="modal-footer-btn">
-                <button class="modal-btn" @click="closeGenerator">Close</button>
+                <!-- <button class="modal-btn" @click="closeGenerator">Close</button> -->
                 <button class="modal-btn main" id="copy-ad-tag-btn" data-clipboard-target="#ad-tag-text">Copy Ad Tag</button>
               </div>
             </div>
@@ -321,7 +321,7 @@
           <div class="g-modal-container g-modal-wide g-modal-msg g-modal-absolute" >
             <button class="closebtn" @click="deleteDSP=false"> &times;</button>
             <div class="g-modal-sub-title">
-              Are you sure you want to delete <span style="color:#E6695B">'{{dspName}}'</span> ?
+              Delete <span style="color:#E6695B">'{{dspName}}'</span> ?
               <br><br>
               <button class="modal-btn" @click="deleteDSP=false">Cancel</button>
               <button class="modal-btn danger" @click="deleteDSPforSure()">Yes</button>
@@ -481,7 +481,9 @@
             },
           },
           customDSP: {
-            
+            'New DSP': {
+              "name":"Other"
+            },
           },
           campaignlist:  [], //list for campaign <select>
           campaignId: '', //v-model of campaign <select>
@@ -688,15 +690,14 @@
         }
 
         if ( modal.isVast == true ) {
-          this.generateVasttag();
+          if (this.dspName != 'New DSP') {
+            this.generateVasttag();
+          }
           this.testerLink = 'https://developers.google.com/interactive-media-ads/docs/sdks/html5/vastinspector';
-          // $('#tester-link').attr('href','https://developers.google.com/interactive-media-ads/docs/sdks/html5/vastinspector');
-          // console.log('sdsds');
         }
         else {
           this.generateAdtag();
           this.testerLink = 'https://cdn.richmediaads.com/tester/index.html';
-          // $('#tester-link').attr('href','https://cdn.richmediaads.com/tester/index.html');
         }
       },
       generateAdtag: function() {
@@ -1080,29 +1081,31 @@
         })
 
         modal.updatedDSPname = modal.dspName;
-        modal.pend = true;
-        modal.pendMsg = 'Updating';
-        modal.spinner = true;
-        modal.msgSign = 0;
-        if ( exist == true ) { //update
-          console.log('update');
-          axios.post('/api/dsp/' + modal.userId +'/' + modal.dspNameinput, sobj).then( function (res) {
-            modal.MsgBox('DSP Updated', 2000, false, true, 1);
-            modal.closeDSPsett();
-          }).catch( function (error) {
-            modal.MsgBox('Failed to update DSP', 2000, false, false, 2);
-          });
-        }
-        else { //create
-          console.log('create');
-          modal.updatedDSPname = modal.dspNameinput;
-          axios.put('/api/dsp/' + modal.userId +'/' + modal.dspNameinput, sobj).then( function (res) {
-            modal.MsgBox('DSP Saved', 2000, false, true, 1);
-            modal.closeDSPsett();
-          }).catch( function (error) {
-            modal.MsgBox('Failed to save DSP', 2000, false, false, 2);
-          });
-        }
+        this.customDSP[modal.dspNameinput] = obj;
+        // this.dspName = modal.dspNameinput;
+        // modal.pend = true;
+        // modal.pendMsg = 'Updating';
+        // modal.spinner = true;
+        // modal.msgSign = 0;
+        // if ( exist == true ) { //update
+        //   console.log('update');
+        //   axios.post('/api/dsp/' + modal.userId +'/' + modal.dspNameinput, sobj).then( function (res) {
+        //     modal.MsgBox('DSP Updated', 2000, false, true, 1);
+        //     modal.closeDSPsett();
+        //   }).catch( function (error) {
+        //     modal.MsgBox('Failed to update DSP', 2000, false, false, 2);
+        //   });
+        // }
+        // else { //create
+        //   console.log('create');
+        //   modal.updatedDSPname = modal.dspNameinput;
+        //   axios.put('/api/dsp/' + modal.userId +'/' + modal.dspNameinput, sobj).then( function (res) {
+        //     modal.MsgBox('DSP Saved', 2000, false, true, 1);
+        //     modal.closeDSPsett();
+        //   }).catch( function (error) {
+        //     modal.MsgBox('Failed to save DSP', 2000, false, false, 2);
+        //   });
+        // }
       },
       saveAndupdate: function() {
         var n = [];
@@ -1124,10 +1127,20 @@
         else {
           if ( removeSpace(this.dspNameinput) && this.dspNameinput != 'New DSP' && n.indexOf(this.dspNameinput) < 0) {
             if ( this.isVast == true ) {
-              this.generateVasttag();
+              if (this.dspName != this.dspNameinput) {
+                this.dspName = this.dspNameinput;
+              }
+              else {
+                this.generateVasttag();
+              }
             }
             else{
-              this.generateAdtag();
+              if (this.dspName != this.dspNameinput) {
+                this.dspName = this.dspNameinput;
+              }
+              else {
+                this.generateAdtag();
+              }
             }
             this.saveDSP();
           }
@@ -1189,13 +1202,17 @@
         modal.msgSign = 0;
         modal.spinner = true;
         modal.updatedDSPname = '';
-        axios.delete('/api/dsp/' + modal.userId + '/' + modal.dspName
-        ).then( function (res) {
-          console.log('deleted');
-          modal.MsgBox('DSP Deleted!', 2000, false, true, 1);
-        }).catch( function (error) {
-          modal.MsgBox('Failed to delete DSP!', 2000, false, false, 2);
-        });
+        delete this.customDSP[this.dspName];
+        modal.MsgBox('DSP Deleted!', 2000, false, true, 1);
+        this.dspName = 'Bucksense';
+        // console.log(this.customDSP.length, this.customDSP);
+        // axios.delete('/api/dsp/' + modal.userId + '/' + modal.dspName
+        // ).then( function (res) {
+        //   console.log('deleted');
+        //   modal.MsgBox('DSP Deleted!', 2000, false, true, 1);
+        // }).catch( function (error) {
+        //   modal.MsgBox('Failed to delete DSP!', 2000, false, false, 2);
+        // });
       },
       getDSPlist: function() {
         var modal = this;
@@ -1792,6 +1809,7 @@
             if ( this.dspName == 'New DSP' ) {
               this.showDSPsett();
               this.deleteBtn = false;
+              // return false;
             }
             else{
               this.deleteBtn = true;
@@ -1848,8 +1866,12 @@
   }
 
   textarea {
-     box-sizing: border-box;
-   }
+    box-sizing: border-box;
+  }
+
+  #campaign-select {
+    display: none;
+  }
 
   .fade-enter, .fade-leave-active {
     opacity: 0;
@@ -1969,6 +1991,7 @@
     padding: 6px;
     border-radius: 4px;
     border: 1px solid #939393;
+    box-sizing: border-box;
 
   }
 
@@ -2085,7 +2108,7 @@
   }
 
   #ad-tag-text.isVast {
-    height: 230px;
+    height: 298px;
   }
 
   #ad-tag-text.inAppOpt {
