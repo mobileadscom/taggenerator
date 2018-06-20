@@ -33,7 +33,7 @@
                   </optgroup>
                 </select>
                 <div id="edit-dsp">
-                  <button class="link-button" v-bind:disabled="disableedit" @click="showDSPsett">Edit</button>
+                  <button class="link-button" v-bind:disabled="disableedit" v-if="!disableedit" @click="showDSPsett">Edit</button>
                   <div id="edit-dsp-tooltip" class="g-modal-tooltip">You can only edit your own Custom DSP</div>
                 </div>
                 <button id="advance-settings" class="link-button" @click="toggleInvsett">{{InvSettText}}</button>
