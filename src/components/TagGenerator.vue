@@ -19,7 +19,7 @@
                 <!-- <br> -->
                 Which DSP is this Ad Tag for?
                 <br>
-                <div style="position: relative;">
+                <div class="sett-flex" style="padding-bottom: 10px;">
                 <select id="dsp-select" v-model="dspName">
                   <optgroup label="Custom DSP">
                     <option v-for="(dsp, index) in customDSP" v-bind:value="index">
@@ -52,21 +52,25 @@
                   Test Your Ad Tag Here
                 </a>
                 <br>
-                <div id="vastVer" v-if="isVast">
-                  Vast Format
-                  <img src="http://d2wq251ql2e9x9.cloudfront.net/images/generate-ad-tag/help.png" class="help-icon tooltipsIcon" style="vertical-align: -3px;" rel="Vast Format"
-               rel2=" VAST tag comes in 2 formats such as a VAST URL or VAST XML codes. Choose the correct format that is supported by your DSP. If your DSP support both formats, using VAST XML format is preferable." alt="">
-                  <input type="radio" name="vastFor" value="xml" id="vastf-xml" v-model="vastFormat" />
-                  <label for="vastf-xml">XML</label>
-                  <input type="radio" name="vastFor" value="url" id="vastf-url" v-model="vastFormat" />
-                  <label for="vastf-url" style="margin-right: 75px;">URL</label>
-                  Vast Version
-                  <img src="http://d2wq251ql2e9x9.cloudfront.net/images/generate-ad-tag/help.png" class="help-icon tooltipsIcon" style="vertical-align: -3px;" rel="Vast Version"
-               rel2="Different DSP may support different VAST version. Selecting the correct VAST version ensure optimum delivery of your ad. If unsure, choose VAST 2.0 which is the widely supported VAST version." alt="">
-                  <input type="radio" name="vastVer" value="2.0" id="vast2" v-model="vastVersion" />
-                  <label for="vast2">2.0</label>
-                  <input type="radio" name="vastVer" value="3.0" id="vast3" v-model="vastVersion" />
-                  <label for="vast3" style="margin-right: 30px;">3.0</label>
+                <div id="vastVer" v-if="isVast" class="sett-flex">
+                  <div class="vastFormat">
+                    Vast Format
+                    <img src="http://d2wq251ql2e9x9.cloudfront.net/images/generate-ad-tag/help.png" class="help-icon tooltipsIcon" style="vertical-align: -3px;" rel="Vast Format"
+                 rel2=" VAST tag comes in 2 formats such as a VAST URL or VAST XML codes. Choose the correct format that is supported by your DSP. If your DSP support both formats, using VAST XML format is preferable." alt="">
+                    <input type="radio" name="vastFor" value="xml" id="vastf-xml" v-model="vastFormat" />
+                    <label for="vastf-xml">XML</label>
+                    <input type="radio" name="vastFor" value="url" id="vastf-url" v-model="vastFormat" />
+                    <label for="vastf-url" style="margin-right: 15px;">URL</label>
+                  </div>
+                  <div class="vastVersion">
+                    Vast Version
+                    <img src="http://d2wq251ql2e9x9.cloudfront.net/images/generate-ad-tag/help.png" class="help-icon tooltipsIcon" style="vertical-align: -3px;" rel="Vast Version"
+                 rel2="Different DSP may support different VAST version. Selecting the correct VAST version ensure optimum delivery of your ad. If unsure, choose VAST 2.0 which is the widely supported VAST version." alt="">
+                    <input type="radio" name="vastVer" value="2.0" id="vast2" v-model="vastVersion" />
+                    <label for="vast2">2.0</label>
+                    <input type="radio" name="vastVer" value="3.0" id="vast3" v-model="vastVersion" />
+                    <label for="vast3">3.0</label>
+                  </div>
                 </div>
                 <textarea id="ad-tag-text" onclick="this.select();" v-bind:class="{ 'isVast': isVast, 'inAppOpt': timezone != '+09:00' && !isVast }" readonly>Your Script here</textarea>
                 <div id="ad-tag-tooltip" class="g-modal-tooltip" v-if="showAdtagmsg">
@@ -96,12 +100,14 @@
               Click Macro
               <img src="http://d2wq251ql2e9x9.cloudfront.net/images/generate-ad-tag/help.png"  class="help-icon tooltipsIcon" rel="Click Macro"  rel2="Click Macro is used by your DSP/Ad Exchange to track clickthroughs on the ad.</br> There are typically 3 types of macros offered by most DSP/Ad Exchange: Non Escaped, Single Escaped and Double Escaped Macro.</br>Non Escaped Macro is a tracking url in its simplest form without any encoding.</br>Single Escaped Macro is a tracking url that has been encoded one time.</br>Double Escaped Macro is a tracking url that has been encoded two times.</br>Check with your DSP/Ad Exchange what is their supported macro." alt="">
               <br>
-              <input type="text" placeholder="[clickmacro]" id="cm-input" style="margin-left: 15px; margin-bottom: 10px;" v-model="cm"/>
+              <input type="text" placeholder="[clickmacro]" id="cm-input" style="margin-left: 15px; margin-bottom: 2px;" v-model="cm"/>
+              <br>
               <input type="checkbox" name="clickmacro-check" value="true" id="nonrediectmacro" v-model="nondirmac"/>
               <label for="nonrediectmacro">Non-redirect Macro</label>
               <br>
               <input type="radio" name="clickmacro" value="ct" id="nonescape" v-model="escMacro" v-bind:disabled="nondirmac" />
               <label for="nonescape">Non Escaped/Single Escaped</label>
+              <br>
               <input type="radio" name="clickmacro" value="ect" id="dbescape" v-model="escMacro" v-bind:disabled="nondirmac"/>
               <label for="dbescape">Double Escaped</label>
               <hr class="greenline">
@@ -1657,7 +1663,7 @@
         else {
           // modal.showTooltip('Generating...', 0 ,true);
           pubUserId = 0;
-          vidUrl = 'https://rmarepo.richmediaads.com/3354/videos/mov_bbb.mp4';
+          vidUrl = 'https://rmarepo.richmediaads.com/3354/videos/Roller_Coaster_MobileAds.mp4';
           rmaId = 164;
           tabId = 1;
           vidLength = '10.026667';
@@ -1819,7 +1825,7 @@
             }
 
             if ( this.reupdate == true ) {
-              this.inputSettings();
+              // this.inputSettings();
             }
             else{
               this.reupdate = true;
@@ -1840,7 +1846,7 @@
             this.isVast = false;
           }
           if ( this.dspName != '' ) {
-            this.inputSettings();
+            // this.inputSettings();
           }
         }
       },
@@ -1899,7 +1905,7 @@
   }
 
   .g-modal-container {
-    width: 380px;
+    /*width: 380px;*/
     padding: 15px 30px;
     background-color: #F7F7F7;
     border-radius: 8px;
@@ -1909,11 +1915,14 @@
     vertical-align: middle;
     margin:0px auto;
     transition: all 0.5s;
-    height: 550px;
+    /*height: 580px;*/
+    width: 90%;
+    max-width: 380px;
+    box-sizing: border-box;
   }
 
   .g-modal-container.g-modal-wide{
-    width:450px;
+    max-width: 450px;
   }
 
   .gmodalleft{
@@ -1923,6 +1932,18 @@
   .gmodalright{
     border-radius:0px 12px 12px 0px;
     border-left:1px solid #999999;
+  }
+
+  @media( min-width: 1px) {
+    .gmodalleft {
+      display: none;
+    }
+  }
+
+  @media( min-width: 992px) {
+    .gmodalleft {
+      display: inline-block;
+    }
   }
 
   .g-modal-container button:hover {
@@ -1964,8 +1985,7 @@
   }
 
   .g-modal-container select {
-    margin: 15px 0px;
-    margin-top: 5px;
+    margin: 5px 5px 5px 0px;
     width: 100%;
     padding: 6px;
     border: 1px solid #939393;
@@ -2008,7 +2028,7 @@
   }
 
   #dsp-select {
-    width: 280px;
+    width: 220px;
   }
 
   optgroup:first-child option:first-child {
@@ -2050,12 +2070,13 @@
   }
 
   #advance-settings {
-    margin-bottom: 10px;
+    padding: 5px 6px 0px;
+    /*margin-bottom: 10px;
     width:160px;
     text-align: right;
     position: absolute;
     top:11px;
-    right:0px;
+    right:0px;*/
   }
 
   .greenline {
@@ -2169,7 +2190,8 @@
   }
 
   #nonrediectmacro {
-    margin-left: 10px;
+    margin-left: 16px;
+    margin-bottom: 15px;
   }
 
   #cbt-timer {
@@ -2177,17 +2199,17 @@
   }
 
   .dsp-sett {
-    width: 400px;
-    height: 270px;
+    width: 100%;
+    height: 222px;
     overflow-y: auto;
   }
 
   .dsp-sett input[type="text"]{
-    width: 98%;
+    width: 100%;
   }
 
   .ext-sett {
-    width: 400px;
+    width: 100%;
     height: 295px;
     overflow-y: auto;
     font-size: 12px;
@@ -2195,7 +2217,7 @@
   }
 
   .ext-sett.isVast {
-    height: 345px;
+    height: 347px;
   }
 
   .vast-sett {
@@ -2212,7 +2234,7 @@
     margin-top: 3px;
     margin-bottom: 12px;
     padding: 3px;
-    width: 378px;
+    width: 100%;
     resize: none;
     height: 40px;
     font-size: 12px;
@@ -2262,5 +2284,12 @@
   .instruction {
     margin: 5px 0px 30px;
     font-size: 12px;
+  }
+
+  .sett-flex {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-between;
   }
 </style>
