@@ -6,7 +6,7 @@
           <!--General Ad Tag Settings-->
           <div class="g-modal-container g-modal-wide" v-bind:class="{ gmodalleft: dspsett || invsett }" v-bind:key="1" v-if="showGenerator">
             <!-- <button class="closebtn" @click="closeGenerator"> &times;</button> -->
-            <div class="g-modal-title" style="color:#5CB85C;">Ad Tag Generator</div>
+            <div class="g-modal-title" style="color:#5CB85C;">Vast Tag Generator</div>
             <div class="g-modal-content">
               <div id="general-setting">
                <!--  Generate Ad Tag for Campaign
