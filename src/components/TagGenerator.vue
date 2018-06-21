@@ -1493,7 +1493,7 @@
             postData
           ).then(function (res) { //retrieve params
             vasturl = 'https://vast.richmediaads.com/vast.php?xmlpath=' + xmlpath + '&pageLoadId=' + pageLoadId + '&cb=' + modal.cb + '&dsp=' + modal.dspNameinput.toLowerCase() + '&exchange=' + modal.exchMac + '&inventory=' +  modal.invMac + '&uniqueId=' + modal.devidMac + '&ct=' + modal.cm;
-            $('#ad-tag-text').val(vasturl);
+            $('#ad-tag-text').val( encodeURI(vasturl));
             if ( modal.firstRun > 0 ) {
               $('#ad-tag-text').select();
             }
@@ -1530,7 +1530,7 @@
             vastXML = '<?xml version="1.0" encoding="UTF-8"?>\n<VAST version="' + modal.vastVersion +'">';
             vastXML += "\n    <Ad id=\"" + MD5ID + "\">";
             vastXML += "\n    <Wrapper>\n        <AdSystem>MobileAds.com</AdSystem>";
-            vastXML += "\n        <VASTAdTagURI><![CDATA[" + vasturl + "]]></VASTAdTagURI>";
+            vastXML += "\n        <VASTAdTagURI><![CDATA[" +  encodeURI(vasturl) + "]]></VASTAdTagURI>";
             vastXML += "\n        <Impression><![CDATA[" + protocol + trackDomain + "/t?i=" + MD5ID // + "]]></Impression>";
             var params = {
               cb:modal.cb,
