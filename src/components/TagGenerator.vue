@@ -19,7 +19,7 @@
                 <!-- <br> -->
                 Which DSP is this Ad Tag for?
                 <br>
-                <div class="sett-flex" style="padding-bottom: 10px;">
+                <div class="sett-flex" style="padding-bottom: 10px;position: relative;">
                 <select id="dsp-select" v-model="dspName">
                   <optgroup label="Custom DSP">
                     <option v-for="(dsp, index) in customDSP" v-bind:value="index">
@@ -37,6 +37,12 @@
                   <div id="edit-dsp-tooltip" class="g-modal-tooltip">You can only edit your own Custom DSP</div>
                 </div>
                 <button id="advance-settings" class="link-button" @click="toggleInvsett">{{InvSettText}}</button>
+                </div>
+                <div>
+                  Video URL <span style="font-size: 12px;"> *mp4 format only</span>
+                  <input type="text" placeholder="https://www.mystorage/videos/my-video.mp4" v-model="videoURL" style="margin-bottom: 2px;" />
+                  <br>
+                  <button class="modal-btn main" @click="saveAndupdate()">Update Ad Tag</button>
                 </div>
                 <div v-if="timezone != '+09:00' && !isVast">
                   <input type="checkbox" name="inApp-check" value="true" id="inApp-check" v-model="isInApp"/>
@@ -520,11 +526,12 @@
           firstRun: 0, //number of times generateAdtag has run
           isVast: false, //is ad format VST?
           vastVersion: "3.0",
-          vastFormat: "xml",
+          vastFormat: "url",
           skv: false, //v-model of skip video checkbox
           vidtime: 5, //v-model of number input of video timer,
           testerLink: 'https://cdn.richmediaads.com/tester/index.html',
-          firstLoad: true
+          firstLoad: true,
+          videoURL: 'https://rmarepo.richmediaads.com/3354/videos/Roller_Coaster_MobileAds.mp4'
         }
       },
       openChatbot: function() {
@@ -1486,14 +1493,13 @@
           //if ( window.location.hostname.indexOf("mobileads") < 0 ) {
            // domain = encodeURIComponent('https://rmatestrepo.richmediaads.com/');
          // }
-
-          var xmlpath = modal.userId + '/vast-xml/' + MD5ID + '.xml';
-          console.log(modal.userId, MD5ID);
+          var filename = Date.now().toString();
+          var xmlpath = 'taggenerator/vast-xml/' + filename + '.xml';
           modal.showTooltip('Generating...', 0 ,true);
           var postData = {
             xml: xml,
-              path: modal.userId + '/vast-xml',
-              name: MD5ID + '.xml'
+              path: 'taggenerator/vast-xml',
+              name: filename + '.xml'
           }
           axios.post('https://www.mobileads.com/vast/add?bucket=rmarepo',
             postData
@@ -1522,12 +1528,13 @@
           console.log('xml');
           var vastXML = '';
           var vasturl =  '';
-          var xmlpath = modal.userId + '/vast-xml/' + MD5ID + '.xml';
+          var filename = Date.now().toString();
+          var xmlpath = 'taggenerator/vast-xml/' + filename + '.xml';
           modal.showTooltip('Generating...', 0 ,true);
           var postData = {
             xml: xml,
-            path: modal.userId + '/vast-xml',
-            name: MD5ID + '.xml'
+            path: 'taggenerator/vast-xml',
+            name: filename + '.xml'
           }
           axios.post('https://www.mobileads.com/vast/add?bucket=rmarepo',
             postData
@@ -1607,11 +1614,16 @@
           }
           vasttag += "\n                    <Duration>" + compileTime(vidLength) + "</Duration>";
           vasttag += "\n                    <MediaFiles>";
-          for (var vt = 0; vt < vidtype.length; vt++){
-            for (var r = 0; r < vidresol.length; r++){
-              var cdata = vidUrl.slice(0, -4) + '_' + vidresol[r].res + '.' + vidtype[vt];
-              vasttag += "\n                        <MediaFile type=\"video/" + vidtype[vt] + "\" delivery=\"progressive\" width=\"" + vidresol[r].width + "\" height=\"" + vidresol[r].height + "\"><![CDATA[" + cdata + "]]></MediaFile>";
-           }
+          if (!modal.videoURL) {
+            for (var vt = 0; vt < vidtype.length; vt++){
+              for (var r = 0; r < vidresol.length; r++){
+                var cdata = vidUrl.slice(0, -4) + '_' + vidresol[r].res + '.' + vidtype[vt];
+                vasttag += "\n                        <MediaFile type=\"video/" + vidtype[vt] + "\" delivery=\"progressive\" width=\"" + vidresol[r].width + "\" height=\"" + vidresol[r].height + "\"><![CDATA[" + cdata + "]]></MediaFile>";
+             }
+            }
+          }
+          else {
+            vasttag += "\n                        <MediaFile type=\"video/mp4\" delivery=\"progressive\" width=\"480\" height=\"320\"><![CDATA[" + modal.videoURL + "]]></MediaFile>";
           }
           vasttag += "\n                    </MediaFiles>\n                    <VideoClicks>";
 
@@ -1825,7 +1837,7 @@
             }
 
             if ( this.reupdate == true ) {
-              // this.inputSettings();
+              this.inputSettings();
             }
             else{
               this.reupdate = true;
@@ -1840,13 +1852,13 @@
         if ( this.campaignId ) {
           if (this.campaignlist[this.getSelectedcamp()].adFormat == "VST" ) {
             this.isVast = true;
-            this.vastFormat = 'xml';
+            this.vastFormat = 'url';
           }
           else{
             this.isVast = false;
           }
           if ( this.dspName != '' ) {
-            // this.inputSettings();
+            this.inputSettings();
           }
         }
       },
@@ -2058,7 +2070,7 @@
 
   #edit-dsp {
     position: absolute;
-    right:194px;
+    left: 165px;
     top:11px;
   }
 
@@ -2129,7 +2141,7 @@
   }
 
   #ad-tag-text.isVast {
-    height: 298px;
+    height: 203px;
   }
 
   #ad-tag-text.inAppOpt {
