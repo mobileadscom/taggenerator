@@ -407,18 +407,18 @@
           deleteBtn: true, //Hide/Show Delete Dsp button
           updatedDSPname: '', //Name of last updated dsp
           definedDSP: {
-            'Bucksense' : {
-              'name': 'Bucksense',
-              'cachebuster': '%%CACHE_BUSTER%%',
-              'cte': '%%CLICK_TRACKER%%',
-              'tag': ["'dsp':'Bucksense'", "'exchange':'%%EXCHANGE_ID%%'", "'inventory':'%%APP_BUNDLE_ENC%%'", "'uniqueId':'%%DEVICE_IOS_IFA%%%%DEVICE_ANDROID_IFA%%'"]
-            },
             'PocketMath': {
               'name': 'PocketMath',
               'cachebuster': '${imp_id}',
               'click-macro': '${click_url}',
               'tmc': "{'dsp':'PocketMath','macro':{'macro_imp_id' : '${imp_id}','macro_gaid' : '${gaid}', 'macro_ifa' : '${ifa}', 'macro_source_id' : '${source_id}', 'macro_bundle_id' : '${bundle_id}', 'macro_sha1_dpid' : '${sha1_dpid}', 'macro_sha1_did' : '${sha1_did}', 'macro_campaign_id' : '${campaign_id}', 'macro_order_id' : '${order_id}', 'macro_timestamp' : '${timestamp}' }}",
               'tag': ["'dsp':'PocketMath'", "'exchange':'${exchange}'", "'inventory':'${source_id}'", "'uniqueId':'${device_identifier}'"]
+            },
+            'Bucksense' : {
+              'name': 'Bucksense',
+              'cachebuster': '%%CACHE_BUSTER%%',
+              'cte': '%%CLICK_TRACKER%%',
+              'tag': ["'dsp':'Bucksense'", "'exchange':'%%EXCHANGE_ID%%'", "'inventory':'%%APP_BUNDLE_ENC%%'", "'uniqueId':'%%DEVICE_IOS_IFA%%%%DEVICE_ANDROID_IFA%%'"]
             },
             'SiteScout': {
               'name': 'SiteScout',
@@ -1217,7 +1217,7 @@
         modal.updatedDSPname = '';
         delete this.customDSP[this.dspName];
         modal.MsgBox('DSP Deleted!', 2000, false, true, 1);
-        this.dspName = 'Bucksense';
+        this.dspName = 'PocketMath';
         // console.log(this.customDSP.length, this.customDSP);
         // axios.delete('/api/dsp/' + modal.userId + '/' + modal.dspName
         // ).then( function (res) {
@@ -1253,7 +1253,7 @@
             }
           }
           else {
-            modal.dspName = 'Bucksense';
+            modal.dspName = 'PocketMath';
           }
         }
 
@@ -1493,7 +1493,7 @@
           //if ( window.location.hostname.indexOf("mobileads") < 0 ) {
            // domain = encodeURIComponent('https://rmatestrepo.richmediaads.com/');
          // }
-          var filename = Date.now().toString();
+          var filename = modal.dspName + Date.now().toString();
           var xmlpath = 'taggenerator/vast-xml/' + filename + '.xml';
           modal.showTooltip('Generating...', 0 ,true);
           var postData = {
@@ -1528,7 +1528,7 @@
           console.log('xml');
           var vastXML = '';
           var vasturl =  '';
-          var filename = Date.now().toString();
+          var filename = modal.dspName + Date.now().toString();
           var xmlpath = 'taggenerator/vast-xml/' + filename + '.xml';
           modal.showTooltip('Generating...', 0 ,true);
           var postData = {
