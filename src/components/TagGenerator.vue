@@ -267,6 +267,7 @@
                     Hide More Trackers
                     </button>-->
                   </div>
+                  <button class="link-button mobile" @click="toggleInvsett"><< Back to Basic Settings</button>
               </div>
 
               <!--<hr class="greenline" v-if="isVast">
@@ -1950,11 +1951,19 @@
     .gmodalleft {
       display: none;
     }
+
+    .mobile {
+      display: block;
+    }
   }
 
   @media( min-width: 992px) {
     .gmodalleft {
       display: inline-block;
+    }
+
+    .mobile {
+      display: none;
     }
   }
 
