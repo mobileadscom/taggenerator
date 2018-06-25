@@ -1877,16 +1877,12 @@
 
 </script>
 
-<style>
+<style scoped>
   @import url('https://fonts.googleapis.com/css?family=Lato');
   
   * {
     font-family: 'Lato', sans-serif;
   }
-
-  body {
-    min-height: 670px;
-  } 
 
   textarea {
     box-sizing: border-box;
@@ -1901,7 +1897,7 @@
   }
 
   .modal-mask {
-    position: absolute;
+    position: fixed;
     z-index: 9998;
     top: 0;
     left: 0;
